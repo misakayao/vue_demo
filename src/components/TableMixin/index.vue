@@ -3,7 +3,7 @@
         <slot></slot>
         <div class="sys-table-pagination">
             <template v-if="pagination">
-                <el-pagination 
+                <el-pagination
                     :layout="pageLayout"
                     :total="paginationTotal"
                     :page-size="pageSize"
@@ -60,12 +60,12 @@ export default {
         align(){
             let res;
             switch(this.paginationAlign){
-                case 'right': 
-                    res = 'textR'
-                    break
-                case 'center': 
-                    res = 'textC'
-                    break
+                case 'right':
+                    res = 'textR';
+                    break;
+                case 'center':
+                    res = 'textC';
+                    break;
                 default:
                     res = ''
             }

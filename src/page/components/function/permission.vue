@@ -30,6 +30,14 @@ export default {
                     name: 'v-hasPermission',
                     detail: '根据传入值鉴别权限，并返回鉴别结果',
                     type: 'String'
+                }, {
+                    name: 'v-hasPermission',
+                    detail: '根据传入值鉴别权限，并返回鉴别结果',
+                    type: 'String'
+                }, {
+                    name: 'v-hasPermission',
+                    detail: '根据传入值鉴别权限，并返回鉴别结果',
+                    type: 'String'
                 }
             ]
         }

@@ -4,12 +4,38 @@ var data = [
         name: '首页'
     },
     {
-        name: '系统组件',
+        name: 'GOP',
         child: [
-            {
+            /*{
                 name: '介绍',
                 path: '/components'
+            },*/
+            {
+                name: '资源管理',
+                child: [
+                    {
+                        path: '/components/permission',
+                        name: '资源组'
+                    },
+                    {
+                        path: '/components/pageTable',
+                        name: '资源'
+                    },
+                    {
+                        path: '/components/pageTitle',
+                        name: '子资源'
+                    }
+                ]
             },
+            {
+                name: '社群管理',
+                child: [
+                    {
+                        path: '/components/pageSearch',
+                        name: '社群'
+                    }
+                ]
+            }/*,
             {
                 name: '功能类',
                 child: [
@@ -52,9 +78,9 @@ var data = [
                         name: '引用说明'
                     }
                 ]
-            }
+            }*/
         ]
-    },
+    }/*,
     {
         name: '完整示例',
         child: [
@@ -80,10 +106,10 @@ var data = [
     {
         path: '/theme',
         name: '主题切换'
-    }
-]
+    }*/
+];
 
 export default [{
     path: '/user/navlist',
     data: data
-}]
+}];

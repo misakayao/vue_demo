@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 // Template version: 1.1.3
 // see http://vuejs-templates.github.io/webpack for documentation.
-const path = require('path')
+const path = require('path');
 
 module.exports = {
     build: {
@@ -29,7 +29,15 @@ module.exports = {
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyTable: {},
+        proxyTable: {
+            '/api': {  //使用"/api"来代替"http://f.apiplus.c"
+                target: 'http://gop.rspeedo.com', //源地址
+                changeOrigin: true, //改变源
+                pathRewrite: {
+                    '^/api': 'http://gop.rspeedo.com' //路径重写
+                }
+            }
+        },
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
         // (https://github.com/webpack/css-loader#sourcemaps)
@@ -37,4 +45,4 @@ module.exports = {
         // just be aware of this issue when enabling this option.
         cssSourceMap: false
     }
-}
+};
