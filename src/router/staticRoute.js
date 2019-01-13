@@ -58,8 +58,8 @@ const staticRoute = [
                 component: () => import(/* webpackChunkName: 'components' */ '../page/components/function/permission')
             },
             {
-                path: 'pageTable',
-                component: () => import(/* webpackChunkName: 'components' */ '../page/components/function/pageTable')
+                path: 'pageCommunity',
+                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageCommunity')
             },
             {
                 path: 'pageSearch',

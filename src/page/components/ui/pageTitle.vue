@@ -1,43 +1,85 @@
 <template>
     <div class="sys-page">
-        <app-title title="页面标题"></app-title>
+        <app-title title="子资源"></app-title>
         <div class="page-content">
-            <div class="article">
-                本页面最上方的“页面标题”即为该组件样式
-            </div>
-            <app-section title="组件说明">
-                <el-table :data="tableData" style="width: 100%">
-                    <el-table-column prop="name" label="组件使用">
-                    </el-table-column>
-                    <el-table-column prop="detail" label="功能描述">
-                    </el-table-column>
-                    <el-table-column prop="param" label="参数">
-                    </el-table-column>
-                    <el-table-column prop="paramDetail" label="参数描述">
-                    </el-table-column>
-                    <el-table-column prop="paramType" label="参数类型">
-                    </el-table-column>
-                </el-table>
-            </app-section>
+            <el-table :data="tableData"
+                      style="width: 100%">
+                <el-table-column
+                    type="index">
+                </el-table-column>
+                <el-table-column prop="_id" label="_id" sortable>
+                </el-table-column>
+                <el-table-column prop="name" label="名称" sortable>
+                </el-table-column>
+                <el-table-column prop="url" label="url">
+                </el-table-column>
+                <el-table-column prop="createtime" label="创建时间" :formatter="formatTime">
+                </el-table-column>
+                <el-table-column prop="updatetime" label="更新时间" :formatter="formatTime">
+                </el-table-column>
+                <el-table-column prop="status" label="状态" :formatter="formatStatus">
+                </el-table-column>
+            </el-table>
+            <br/>
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size=pageSize
+                layout="total, sizes, prev, pager, next, jumper"
+                :total=paginationTotal>
+            </el-pagination>
+
         </div>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'comPageTitle',
-    data() {
-        return {
-            tableData: [
-                {
-                    name: '<app-title></app-title>',
-                    detail: '该区域为每页标题',
-                    param: 'title',
-                    paramDetail: '定义标题内容',
-                    paramType: 'String'
-                }
-            ]
+    export default {
+        name: 'comPageTable',
+        methods: {
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                this.pageSize = val;
+                this.getData();
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+                this.currentPage = val;
+                this.getData();
+            },
+            getData() {
+                fetch(`/api/resource/subresource?offset=${(this.currentPage - 1) * this.pageSize}&limit=${this.pageSize}`).then(res => {
+                    return res.json();     //返回promise对象
+                }).then(response => {
+                    console.log("response:", response);
+                    if (response.result === 1) {
+                        this.paginationTotal = response.data.total;
+                        this.tableData = response.data.rows
+                    }
+                }).catch(reason => {
+                    console.log("reason:", reason);
+                });
+            },
+            formatStatus(row) {
+                return row.status === 1 ? "正常" : "停用";
+            },
+            formatTime(row, column) {
+                //console.log(JSON.stringify(row), JSON.stringify(column));
+                return row[column.property] ? new Date(row[column.property]).toLocaleString() : "暂未更新";
+            }
+        },
+        data: function () {
+            return {
+                tableData: [],
+                paginationTotal: 0,
+                currentPage: 1,
+                pageSize: 10,
+            }
+        },
+        mounted() {
+            this.getData();
         }
     }
-}
 </script>

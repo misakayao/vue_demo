@@ -18,7 +18,7 @@ var data = [
                         name: '资源组'
                     },
                     {
-                        path: '/components/pageTable',
+                        path: '/components/pageSearch',
                         name: '资源'
                     },
                     {
@@ -31,7 +31,7 @@ var data = [
                 name: '社群管理',
                 child: [
                     {
-                        path: '/components/pageSearch',
+                        path: '/components/pageCommunity',
                         name: '社群'
                     }
                 ]

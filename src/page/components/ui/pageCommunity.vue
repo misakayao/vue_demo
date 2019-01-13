@@ -1,38 +1,37 @@
 <template>
     <div class="sys-page">
-        <app-title title="统一分页插件"></app-title>
+        <app-title title="社群"></app-title>
         <div class="page-content">
-            <div class="article">
-                <p>该组件为ElementUI的分页组件二次封装，以实现统一的分页设置。分页所有方法统一继承自ElementUI</p>
-            </div>
+            <el-table :data="tableData"
+                      style="width: 100%">
+                <el-table-column
+                    type="index">
+                </el-table-column>
+                <el-table-column prop="_id" label="_id">
+                </el-table-column>
+                <el-table-column prop="code" label="社群code">
+                </el-table-column>
+                <el-table-column prop="createtime" label="创建时间" :formatter="formatTime">
+                </el-table-column>
+                <el-table-column prop="name" label="名称">
+                </el-table-column>
+                <el-table-column prop="resgroups" label="资源组">
+                    <template slot-scope="scope">
+                        <!--{{scope.row.resgroups}}-->
+                        <ul>
+                            <li v-for="item in scope.row.resgroups">{{item}}</li>
+                        </ul>
+                    </template>
 
-            <app-section title="函数说明">
-                <el-table :data="tableData"
-                          style="width: 100%">
-                    <el-table-column
-                        type="index">
-                    </el-table-column>
-                    <el-table-column prop="_id" label="参数类型">
-                    </el-table-column>
-                    <el-table-column prop="code" label="组件使用">
-                    </el-table-column>
-                    <el-table-column prop="createtime" label="功能描述">
-                    </el-table-column>
-                    <el-table-column prop="name" label="参数">
-                    </el-table-column>
-                    <el-table-column prop="resgroups" label="参数描述">
-                        <template slot-scope="scope">
-                            <!--{{scope.row.resgroups}}-->
-                            <ul>
-                                <li v-for="item in scope.row.resgroups">{{item}}</li>
-                            </ul>
-                        </template>
-
-                    </el-table-column>
-                    <el-table-column prop="status" label="参数类型">
-                    </el-table-column>
-                </el-table>
-            </app-section>
+                </el-table-column>
+                <el-table-column prop="status" label="状态">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status === 1">正常</span>
+                        <span v-else>删除</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <br/>
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -54,6 +53,7 @@
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
                 this.pageSize = val;
+                this.getData();
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
@@ -73,9 +73,12 @@
                     console.log("reason:", reason);
                 });
             },
+            formatTime(row, column) {
+                //console.log(JSON.stringify(row), JSON.stringify(column));
+                return row[column.property] ? new Date(row[column.property]).toLocaleString() : " ";
+            }
         },
         data: function () {
-            console.log("1234:", 1234);
             return {
                 tableData: [],
                 paginationTotal: 0,
