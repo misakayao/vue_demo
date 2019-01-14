@@ -10,6 +10,13 @@
                 <el-table-column prop="_id" label="_id">
                 </el-table-column>
                 <el-table-column prop="code" label="社群code">
+                    <template slot-scope="scope">
+                            <span v-if="scope.isSet">
+                                <el-input size="mini" placeholder="请输入内容" v-model="scope.code">
+                                </el-input>
+                            </span>
+                        <span v-else>{{scope.code}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="createtime" label="创建时间" :formatter="formatTime">
                 </el-table-column>
@@ -24,10 +31,26 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column prop="status" label="状态">
+                <el-table-column prop="status" label="状态" width="80px">
                     <template slot-scope="scope">
                         <span v-if="scope.row.status === 1">正常</span>
                         <span v-else>删除</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                            <span class="el-tag el-tag--info el-tag--small" style="cursor: pointer;"
+                                  @click="editRow(scope.row,scope.$index,true)">
+                                {{scope.row.isSet?'保存':"修改"}}
+                            </span>
+                        <span v-if="!scope.row.isSet" class="el-tag el-tag--danger el-tag--medium"
+                              style="cursor: pointer;">
+                                删除
+                            </span>
+                        <span v-else class="el-tag  el-tag--mini" style="cursor: pointer;"
+                              @click="editRow(scope.row,scope.$index,false)">
+                                取消
+                            </span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,19 +90,53 @@
                     console.log("response:", response);
                     if (response.result === 1) {
                         this.paginationTotal = response.data.total;
-                        this.tableData = response.data.rows
+                        this.tableData = response.data.rows.map(value => {
+                            value.isSet = false;
+                            return value;
+                        });
                     }
                 }).catch(reason => {
                     console.log("reason:", reason);
                 });
             },
             formatTime(row, column) {
-                //console.log(JSON.stringify(row), JSON.stringify(column));
-                return row[column.property] ? new Date(row[column.property]).toLocaleString() : " ";
+                if (row) {
+                    //console.log(JSON.stringify(row), JSON.stringify(column));
+                    return row[column.property] ? new Date(row[column.property]).toLocaleString() : " ";
+                } else {
+                    return "";
+                }
+            },
+            editRow(row, index, cg) {
+                //点击修改 判断是否已经保存所有操作
+                /*for (let i of app.master_user.data) {
+                    if (i.isSet && i.id != row.id) {
+                        app.$message.warning("请先保存当前编辑项");
+                        return false;
+                    }
+                }*/
+                if (this.currentLine) {
+                    return false;
+                }
+                //是否是取消操作
+                if (!cg) {
+                    /*if (!app.master_user.sel.id) app.master_user.data.splice(index, 1);*/
+                    return row.isSet = !row.isSet;
+                }
+                //提交数据
+                if (this.currentLine) {
+                    //项目是模拟请求操作  自己修改下
+                    this.currentLine = null;
+                    row.isSet = false;
+                } else {
+                    this.currentLine = JSON.parse(JSON.stringify(row));
+                    row.isSet = true;
+                }
             }
         },
         data: function () {
             return {
+                currentLine: null,
                 tableData: [],
                 paginationTotal: 0,
                 currentPage: 1,
