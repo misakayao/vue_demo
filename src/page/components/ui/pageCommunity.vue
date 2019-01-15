@@ -11,11 +11,11 @@
                 </el-table-column>
                 <el-table-column prop="code" label="社群code">
                     <template slot-scope="scope">
-                            <span v-if="scope.isSet">
-                                <el-input size="mini" placeholder="请输入内容" v-model="scope.code">
+                            <span v-if="scope.row.isSet">
+                                <el-input size="mini" placeholder="请输入内容" v-model="scope.row.code">
                                 </el-input>
                             </span>
-                        <span v-else>{{scope.code}}</span>
+                        <span v-else>{{scope.row.code}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="createtime" label="创建时间" :formatter="formatTime">
@@ -34,21 +34,22 @@
                 <el-table-column prop="status" label="状态" width="80px">
                     <template slot-scope="scope">
                         <span v-if="scope.row.status === 1">正常</span>
+                        <span v-else-if="scope.row.status === 0">停用</span>
                         <span v-else>删除</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                            <span class="el-tag el-tag--info el-tag--small" style="cursor: pointer;"
-                                  @click="editRow(scope.row,scope.$index,true)">
+                            <span class="el-tag el-tag--info el-tag--medium" style="cursor: pointer;"
+                                  @click="editRow(scope.row,scope.$index, 1)">
                                 {{scope.row.isSet?'保存':"修改"}}
                             </span>
                         <span v-if="!scope.row.isSet" class="el-tag el-tag--danger el-tag--medium"
-                              style="cursor: pointer;">
+                              style="cursor: pointer;" @click="editRow(scope.row,scope.$index, 2)">
                                 删除
                             </span>
-                        <span v-else class="el-tag  el-tag--mini" style="cursor: pointer;"
-                              @click="editRow(scope.row,scope.$index,false)">
+                        <span v-else class="el-tag  el-tag--medium" style="cursor: pointer;"
+                              @click="editRow(scope.row,scope.$index, 0)">
                                 取消
                             </span>
                     </template>
@@ -115,12 +116,15 @@
                         return false;
                     }
                 }*/
-                if (this.currentLine) {
+                console.log("currentLine:", this.currentLine, ", row:", row);
+                if (this.currentLine && this.currentLine.code !== row.code) {
+                    console.log("editRow:", "请先保存当前编辑项");
                     return false;
                 }
                 //是否是取消操作
                 if (!cg) {
                     /*if (!app.master_user.sel.id) app.master_user.data.splice(index, 1);*/
+                    this.currentLine = null;
                     return row.isSet = !row.isSet;
                 }
                 //提交数据

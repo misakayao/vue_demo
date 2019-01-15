@@ -56,7 +56,7 @@
                 this.getData();
             },
             getData() {
-                fetch(`/api/resource/resgroup?offset=${(this.currentPage - 1) * this.pageSize}&limit=${this.pageSize}`).then(res => {
+                fetch(`/api/resource/resgroup?status=[0,1,2]&offset=${(this.currentPage - 1) * this.pageSize}&limit=${this.pageSize}`).then(res => {
                     return res.json();     //返回promise对象
                 }).then(response => {
                     console.log("response:", response);
@@ -69,7 +69,7 @@
                 });
             },
             formatStatus(row) {
-                return row.status === 1 ? "正常" : "停用";
+                return row.status === 1 ? "正常" : row.status === 0 ?  "停用" : "删除";
             },
             formatTime(row, column) {
                 //console.log(JSON.stringify(row), JSON.stringify(column));
