@@ -40,14 +40,17 @@ export default {
     watch: {
         // 当通过TagNav来激活页面时也执行一次selectMenu
         $route(){
-            let path = this.$route.path
-            let indexPath = this.$refs.navbar.items[path].indexPath
-            this.selectMenu(path, indexPath)
+            let path = this.$route.path;
+            if (this.$refs.navbar.items[path]) {
+                let indexPath = this.$refs.navbar.items[path].indexPath;
+                this.selectMenu(path, indexPath)
+            }
         }
     },
     methods: {
         // eslint-disable-next-line
         selectMenu(index, indexPath){
+            console.log("index:", index,", indexPath:", indexPath);
             /**
              * 在选择父级菜单时自动关闭其下所有子菜单
              * 选择时获取点击菜单的父级index，并计算得到该index在已打开菜单中的索引值，
@@ -62,7 +65,7 @@ export default {
             } else{
                 openMenuList = openedMenus
             }
-            
+
             // 关闭菜单
             openMenuList = openMenuList.reverse()
             openMenuList.forEach((ele) => {

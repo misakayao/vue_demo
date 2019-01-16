@@ -24,12 +24,12 @@
                 </el-table-column>
                 <el-table-column prop="resgroups" label="资源组">
                     <template slot-scope="scope">
-                        <!--{{scope.row.resgroups}}-->
                         <ul>
-                            <li v-for="item in scope.row.resgroups">{{item}}</li>
+                            <router-link v-for="item in scope.row.resgroups" :key="item._id" :to="{name:'pageResDetail', params:{id: item._id, type: 0}}" tag="li">
+                                {{item.name}}
+                            </router-link>
                         </ul>
                     </template>
-
                 </el-table-column>
                 <el-table-column prop="status" label="状态" width="80px">
                     <template slot-scope="scope">
@@ -117,8 +117,12 @@
                     }
                 }*/
                 console.log("currentLine:", this.currentLine, ", row:", row);
-                if (this.currentLine && this.currentLine.code !== row.code) {
+                if (this.currentLine && this.currentLine._id !== row._id) {
                     console.log("editRow:", "请先保存当前编辑项");
+                    this.$notify.error({
+                        title: '错误',
+                        message: '请先保存当前编辑项'
+                    });
                     return false;
                 }
                 //是否是取消操作
@@ -128,13 +132,17 @@
                     return row.isSet = !row.isSet;
                 }
                 //提交数据
-                if (this.currentLine) {
-                    //项目是模拟请求操作  自己修改下
-                    this.currentLine = null;
-                    row.isSet = false;
+                if (cg === 1) {
+                    //修改或者保存
+                    if (this.currentLine) {
+                        this.currentLine = null;
+                        row.isSet = false;
+                    } else {
+                        this.currentLine = JSON.parse(JSON.stringify(row));
+                        row.isSet = true;
+                    }
                 } else {
-                    this.currentLine = JSON.parse(JSON.stringify(row));
-                    row.isSet = true;
+                    //删除
                 }
             }
         },
@@ -149,7 +157,7 @@
         },
         mounted() {
             this.getData();
-        }
+        },
     }
 </script>
 <style>

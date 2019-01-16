@@ -62,20 +62,29 @@ const staticRoute = [
                 component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageCommunity')
             },
             {
-                path: 'pageSearch',
-                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageSearch')
+                path: 'pageResource',
+                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageResource')
             },
             {
                 path: 'pageSection',
                 component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageSection')
             },
             {
-                path: 'pageTitle',
-                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageTitle')
+                path: 'pageSubResource',
+                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageSubResource')
             },
             {
                 path: 'pageToolbar',
                 component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageToolbar')
+            },
+            {
+                path: 'pageResGroup',
+                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageResGroup')
+            },
+            {
+                path: 'pageResDetail',
+                name: 'pageResDetail',
+                component: () => import(/* webpackChunkName: 'components' */ '../page/components/ui/pageResDetail')
             }
         ]
     },
@@ -121,6 +130,6 @@ const staticRoute = [
         path: '*',
         redirect: '/error/404'
     }
-]
+];
 
 export default staticRoute

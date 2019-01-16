@@ -108,8 +108,8 @@ const actions = {
 
     // 将菜单列表扁平化形成权限列表
     getPermissionList({state}){
-        return new Promise((resolve) =>{
-            let permissionList = []
+        return new Promise(async (resolve) =>{
+            let permissionList = [];
             // 将菜单数据扁平化为一级
             function flatNavList(arr){
                 for(let v of arr){
@@ -120,7 +120,20 @@ const actions = {
                     }
                 }
             }
-            flatNavList(state.navList)
+
+            flatNavList(state.navList);
+            let urlList = await new Promise((resolve) => {
+                axios({
+                    url: '/user/urllist',
+                    methods: 'post',
+                    data: {}
+                }).then((res) => {
+                    resolve(res)
+                })
+            });
+            urlList.forEach(value => {
+                permissionList.push(value);
+            });
             resolve(permissionList)
         })
     }

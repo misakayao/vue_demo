@@ -14,15 +14,15 @@ var data = [
                 name: '资源管理',
                 child: [
                     {
-                        path: '/components/permission',
+                        path: '/components/pageResGroup',
                         name: '资源组'
                     },
                     {
-                        path: '/components/pageSearch',
+                        path: '/components/pageResource',
                         name: '资源'
                     },
                     {
-                        path: '/components/pageTitle',
+                        path: '/components/pageSubResource',
                         name: '子资源'
                     }
                 ]
@@ -80,7 +80,7 @@ var data = [
                 ]
             }*/
         ]
-    }/*,
+    },/*
     {
         name: '完整示例',
         child: [
